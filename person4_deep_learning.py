@@ -45,7 +45,7 @@ X_val = X_val.reshape(
 
 model = Sequential([
 
-    Input(shape=(24, 1)),
+    Input(shape=(X_train.shape[1], 1)),
 
     Conv1D(64, 3, padding="same", activation="relu"),
     BatchNormalization(),

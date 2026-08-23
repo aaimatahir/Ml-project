@@ -7,7 +7,7 @@ import joblib
 # 1. LOAD DATASET
 # ==============================
 
-DATASET = "feature_dataset_v2.csv"
+DATASET = "feature_dataset_v2_augmented.csv"
 
 print("Loading dataset...")
 
@@ -29,32 +29,7 @@ print("After removing missing values:", df.shape)
 # 3. SELECT FEATURES
 # ==============================
 
-feature_columns = [
-    "url_length",
-    "dot_count",
-    "hyphen_count",
-    "special_char_count",
-    "has_https",
-    "subdomain_count",
-    "has_ip",
-    "suspicious_keyword_count",
-    "digit_count",
-    "letter_count",
-    "slash_count",
-    "question_mark_count",
-    "equals_count",
-    "ampersand_count",
-    "percent_count",
-    "at_symbol_count",
-    "colon_count",
-    "double_slash_count",
-    "domain_length",
-    "path_length",
-    "query_length",
-    "digit_ratio",
-    "special_char_ratio",
-    "url_entropy"
-]
+from feature_extraction import FEATURE_COLUMNS as feature_columns
 
 X = df[feature_columns]
 y = df["status"]

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ScamShield &mdash; Website Risk Scanner</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="glow"></div>
+  <main class="container">
+    <header>
+      <div class="logo">🛡️</div>
+      <h1>ScamShield</h1>
+      <p class="subtitle">Paste a link below and I'll tell you if it's Safe, Suspicious, or a Scam.</p>
+    </header>
+
+    <form id="scan-form" class="scan-form">
+      <span class="input-icon">🔗</span>
+      <input type="text" id="url-input" placeholder="https://example.com" autocomplete="off" required>
+      <button type="submit" id="scan-btn"><span>Scan</span></button>
+    </form>
+
+    <section id="result" class="result hidden"></section>
+
+    <section class="history">
+      <h2>🕓 Recent Scans</h2>
+      <div id="history-list" class="history-list"></div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

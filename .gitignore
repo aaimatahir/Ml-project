@@ -1,0 +1,22 @@
+# Regenerable intermediate data (rebuild from feature_dataset_v2.csv.xz via
+# rebuild_dataset.py -> augment_dataset.py -> person4_preprocessing.py)
+feature_dataset_v2.csv
+feature_dataset_v2_regenerated.csv
+feature_dataset_v2_augmented.csv
+X_train.npy
+y_train.npy
+
+# Too large for GitHub without Git LFS (355MB); xgboost is the selected
+# best model anyway (models/best_ml_model_name.joblib)
+models/random_forest.joblib
+
+# Runtime state, not source
+scan_history.db
+
+# Python
+__pycache__/
+*.pyc
+
+# Flask
+instance/
+.flaskenv
