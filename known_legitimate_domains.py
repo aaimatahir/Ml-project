@@ -52,4 +52,10 @@ KNOWN_LEGITIMATE_DOMAINS = [
     "booking.com", "airbnb.com", "expedia.com", "tripadvisor.com",
     "uber.com", "lyft.com", "doordash.com", "airbnb.co.uk",
     "yelp.com", "imdb.com", "quora.com", "medium.com", "wordpress.org",
+    # Jobs / productivity / crypto / real estate (added after testing showed
+    # these scoring high despite being clearly legitimate)
+    "indeed.com", "glassdoor.com", "monster.com", "ziprecruiter.com",
+    "canva.com", "notion.so", "figma.com", "asana.com", "trello.com",
+    "coinbase.com", "binance.com", "kraken.com", "zillow.com", "realtor.com",
+    "chess.com", "duolingo.com", "grammarly.com", "canva.cn",
 ]

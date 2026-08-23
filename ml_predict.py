@@ -21,9 +21,11 @@ def _load(name):
 
 
 def best_model_name():
-    path = os.path.join(_MODELS_DIR, "best_ml_model_name.joblib")
-    if os.path.exists(path):
-        return joblib.load(path)
+    # person2_train_ml_models.py picks the best model purely by F1, which can
+    # pick random_forest (a 350MB pickle -- too large for git, slow to load)
+    # over xgboost for a sub-1% F1 difference. Pin the deployed model to
+    # xgboost regardless; the training script's own pick is still saved to
+    # models/best_ml_model_name.joblib for comparison/reporting purposes.
     return "xgboost"
 
 

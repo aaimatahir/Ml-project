@@ -33,22 +33,25 @@ from feature_extraction import FEATURE_COLUMNS as feature_columns
 
 X = df[feature_columns]
 y = df["status"]
+w = df["sample_weight"] if "sample_weight" in df.columns else pd.Series(1.0, index=df.index)
 
 # ==============================
 # 4. TRAIN / VALIDATION / TEST
 # ==============================
 
-X_train, X_temp, y_train, y_temp = train_test_split(
+X_train, X_temp, y_train, y_temp, w_train, w_temp = train_test_split(
     X,
     y,
+    w,
     test_size=0.30,
     random_state=42,
     stratify=y
 )
 
-X_val, X_test, y_val, y_test = train_test_split(
+X_val, X_test, y_val, y_test, w_val, w_test = train_test_split(
     X_temp,
     y_temp,
+    w_temp,
     test_size=0.50,
     random_state=42,
     stratify=y_temp
@@ -81,6 +84,10 @@ np.save("X_test.npy", X_test)
 np.save("y_train.npy", y_train.to_numpy())
 np.save("y_val.npy", y_val.to_numpy())
 np.save("y_test.npy", y_test.to_numpy())
+
+np.save("w_train.npy", w_train.to_numpy())
+np.save("w_val.npy", w_val.to_numpy())
+np.save("w_test.npy", w_test.to_numpy())
 
 joblib.dump(scaler, "models/scaler.pkl")
 

@@ -18,6 +18,7 @@ from sklearn.metrics import (
 
 X_train = np.load("X_train.npy")
 y_train = np.load("y_train.npy")
+w_train = np.load("w_train.npy")
 X_val = np.load("X_val.npy")
 y_val = np.load("y_val.npy")
 X_test = np.load("X_test.npy")
@@ -42,7 +43,7 @@ results = {}
 for name, model in models.items():
     print(f"\n=== Training {name} ===")
     t0 = time.time()
-    model.fit(X_train, y_train)
+    model.fit(X_train, y_train, sample_weight=w_train)
     print(f"Trained in {time.time()-t0:.1f}s")
 
     y_pred = model.predict(X_test)

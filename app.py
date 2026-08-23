@@ -6,6 +6,7 @@ a scan history stored in SQLite.
 
 import os
 import sqlite3
+import time
 from datetime import datetime, timezone
 
 from flask import Flask, render_template, request, jsonify, g
@@ -43,10 +44,15 @@ def init_db():
             ml_probability REAL,
             dl_probability REAL,
             website_probability REAL,
-            scanned_at TEXT NOT NULL
+            scanned_at TEXT NOT NULL,
+            duration_seconds REAL
         )
         """
     )
+    try:
+        conn.execute("ALTER TABLE scans ADD COLUMN duration_seconds REAL")
+    except sqlite3.OperationalError:
+        pass
     conn.commit()
     conn.close()
 
@@ -63,21 +69,25 @@ def api_scan():
     if not url:
         return jsonify({"error": "Please enter a URL"}), 400
 
+    start = time.perf_counter()
     try:
         result = assess_url(url)
     except Exception as e:
         return jsonify({"error": f"Scan failed: {e}"}), 500
+    duration = round(time.perf_counter() - start, 2)
+    result["duration_seconds"] = duration
 
     db = get_db()
     db.execute(
         """INSERT INTO scans (url, verdict, risk_percent, ml_probability,
-           dl_probability, website_probability, scanned_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?)""",
+           dl_probability, website_probability, scanned_at, duration_seconds)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             result["url"], result["verdict"], result["risk_percent"],
             result["ml_probability"], result["dl_probability"],
             result["website_probability"],
             datetime.now(timezone.utc).isoformat(),
+            duration,
         ),
     )
     db.commit()
@@ -89,7 +99,7 @@ def api_scan():
 def api_history():
     db = get_db()
     rows = db.execute(
-        "SELECT url, verdict, risk_percent, scanned_at FROM scans "
+        "SELECT url, verdict, risk_percent, scanned_at, duration_seconds FROM scans "
         "ORDER BY id DESC LIMIT 25"
     ).fetchall()
     return jsonify([dict(r) for r in rows])

@@ -20,6 +20,8 @@ X_val = np.load("X_val.npy")
 y_train = np.load("y_train.npy")
 y_val = np.load("y_val.npy")
 
+w_train = np.load("w_train.npy")
+
 print("Training:", X_train.shape)
 print("Validation:", X_val.shape)
 
@@ -127,6 +129,7 @@ print("\nStarting FULL CNN training...\n")
 history = model.fit(
     X_train,
     y_train,
+    sample_weight=w_train,
     validation_data=(X_val, y_val),
     epochs=25,
     batch_size=512,

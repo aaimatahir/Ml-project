@@ -34,11 +34,14 @@ function renderResult(data) {
   const reasonsHtml = data.reasons.map(r => `<li>${escapeHtml(r)}</li>`).join("");
   const websiteChip = data.website_probability !== null
     ? `<div class="score-chip">Website analysis<strong>${data.website_probability}%</strong></div>` : "";
+  const durationHtml = data.duration_seconds !== undefined
+    ? `<span class="duration-tag">⏱ ${data.duration_seconds}s</span>` : "";
 
   resultBox.innerHTML = `
     <div class="verdict-row">
       <span class="badge ${data.verdict}">${emoji} ${data.verdict}</span>
       <span class="risk-percent">${data.risk_percent}% risk</span>
+      ${durationHtml}
     </div>
     <div class="meter"><div class="meter-fill ${data.verdict}" style="width:${data.risk_percent}%"></div></div>
     <div class="scores">
@@ -65,6 +68,8 @@ async function loadHistory() {
       <span class="history-badge ${r.verdict}">${VERDICT_EMOJI[r.verdict] || ""} ${escapeHtml(r.verdict)}</span>
       <span class="history-url" title="${escapeHtml(r.url)}">${escapeHtml(r.url)}</span>
       <span class="history-risk">${r.risk_percent}%</span>
+      ${r.duration_seconds !== null && r.duration_seconds !== undefined
+        ? `<span class="history-duration">⏱ ${r.duration_seconds}s</span>` : ""}
       <span class="history-time">${timeAgo(r.scanned_at)}</span>
     </div>
   `).join("");

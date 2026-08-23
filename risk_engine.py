@@ -21,9 +21,13 @@ _ALLOWLIST = set(KNOWN_LEGITIMATE_DOMAINS)
 def _is_allowlisted(url: str) -> bool:
     host = urlparse(url if "://" in url else f"http://{url}").netloc.lower()
     host = host.split(":")[0]
-    if host.startswith("www."):
-        host = host[4:]
-    return host in _ALLOWLIST
+    # match the host itself or any of its parent domains, so subdomains of
+    # an allowlisted brand (pk.indeed.com, mail.google.com, ...) also match
+    labels = host.split(".")
+    for i in range(len(labels) - 1):
+        if ".".join(labels[i:]) in _ALLOWLIST:
+            return True
+    return False
 
 SCALER_PATH = "models/scaler.pkl"
 
